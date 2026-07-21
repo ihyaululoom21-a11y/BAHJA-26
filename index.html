@@ -5,7 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAHJA 2026</title>
     <style>
-        body {
+        body {<!-- Firebase SDK Script (Modular) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  // Your Firebase project configuration from screenshot
+  const firebaseConfig = {
+    apiKey: "AIzaSyDLjwLdAqYArPxPFhWGOdu2BPjoWSg1zWQ",
+    authDomain: "bahja-2k26.firebaseapp.com",
+    databaseURL: "https://bahja-2k26-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "bahja-2k26",
+    storageBucket: "bahja-2k26.firebasestorage.app",
+    messagingSenderId: "69268813734",
+    appId: "1:69268813734:web:da45071d7110c304288167",
+    measurementId: "G-2HHXCPZ5VD"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  
+  // Initialize Realtime Database
+  const database = getDatabase(app);
+
+  // Function to save user data
+  function saveUserData(userId, name, email) {
+    set(ref(database, 'users/' + userId), {
+      username: name,
+      email: email
+    }).then(() => {
+      console.log("Data saved successfully!");
+    }).catch((error) => {
+      console.error("Error saving data: ", error);
+    });
+  }
+</script>
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
