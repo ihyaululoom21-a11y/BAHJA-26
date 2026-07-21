@@ -101,12 +101,29 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border: 1px solid #dee2e6;
             text-align: left;
+            position: relative;
         }
 
         .container-box h2 {
             text-align: center;
             color: #0056b3;
             margin-bottom: 30px;
+        }
+
+        .status-alert {
+            display: none;
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .status-alert.show-alert {
+            display: block;
         }
 
         .form-group {
@@ -244,6 +261,40 @@
             gap: 15px;
         }
 
+        .status-control-box {
+            background: #e2f0d9;
+            border: 1px solid #a9d08e;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-control-box span {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .status-toggle-btn {
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .status-toggle-btn.open-status {
+            background-color: #28a745;
+        }
+
+        .status-toggle-btn.closed-status {
+            background-color: #dc3545;
+        }
+
         .filter-section {
             display: flex;
             gap: 15px;
@@ -312,15 +363,18 @@
             gap: 8px;
         }
 
-        .edit-action-btn {
-            background-color: #ffc107;
-            color: #212529;
+        .edit-action-btn, .delete-action-btn {
             border: none;
             padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
             font-size: 0.85rem;
+        }
+
+        .edit-action-btn {
+            background-color: #ffc107;
+            color: #212529;
         }
 
         .edit-action-btn:hover {
@@ -330,12 +384,6 @@
         .delete-action-btn {
             background-color: #dc3545;
             color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85rem;
         }
 
         .delete-action-btn:hover {
@@ -353,7 +401,7 @@
             body {
                 background: white;
             }
-            .nav-header, .print-btn, .filter-section, .dashboard-header h2, .action-column, .action-btn-group {
+            .nav-header, .print-btn, .filter-section, .dashboard-header h2, .action-column, .action-btn-group, .status-control-box {
                 display: none !important;
             }
             .container-box {
@@ -404,8 +452,10 @@
         </div>
 
         <div class="container-box">
+            <div id="registration-closed-alert" class="status-alert">Registration is currently closed by the Committee. You cannot add, edit, or delete entries.</div>
             <h2 id="form-heading">Event Registration</h2>
-            <form onsubmit="handleRegistration(event)">
+            
+            <form id="reg-form-element" onsubmit="handleRegistration(event)">
                 <input type="hidden" id="edit-index" value="-1">
                 
                 <div class="form-group">
@@ -493,6 +543,13 @@
         </div>
 
         <div class="container-box" style="max-width: 1000px;">
+            
+            <!-- REGISTRATION SYSTEM SWITCH FOR COMMITTEE -->
+            <div class="status-control-box" id="status-box-bg">
+                <div>Registration Portal Status: <span id="current-status-text">OPEN</span></div>
+                <button id="status-toggle-button" class="status-toggle-btn open-status" onclick="toggleRegistrationStatus()">CLOSE REGISTRATION</button>
+            </div>
+
             <div class="dashboard-header">
                 <h2>All Registrations Report</h2>
                 <button class="print-btn" onclick="window.print()">Print Report</button>
@@ -558,6 +615,7 @@
         let isCommitteeMode = false;
         
         let allRegistrations = JSON.parse(localStorage.getItem('bahja_registrations')) || [];
+        let isRegistrationOpen = localStorage.getItem('bahja_reg_status') !== "closed";
 
         const authorizedTeams = {
             "jabaliyya": "jabaliyya",
@@ -593,6 +651,7 @@
                 if (userInp === committeeCredentials.username && passInp === committeeCredentials.password) {
                     document.getElementById('login-screen').classList.remove('active-screen');
                     document.getElementById('committee-screen').classList.add('active-screen');
+                    updateCommitteeStatusUI();
                     loadCommitteeTable();
                 } else {
                     alert("Invalid Committee Credentials!");
@@ -604,6 +663,7 @@
                     
                     document.getElementById('login-screen').classList.remove('active-screen');
                     document.getElementById('registration-screen').classList.add('active-screen');
+                    checkRegistrationStatusForTeams();
                     loadTeamTable();
                 } else {
                     alert("Invalid Team Username or Password!");
@@ -618,6 +678,47 @@
             currentActiveTeam = "";
             document.querySelectorAll('.screen-view').forEach(screen => screen.classList.remove('active-screen'));
             document.getElementById('login-screen').classList.add('active-screen');
+        }
+
+        function toggleRegistrationStatus() {
+            isRegistrationOpen = !isRegistrationOpen;
+            localStorage.setItem('bahja_reg_status', isRegistrationOpen ? "open" : "closed");
+            updateCommitteeStatusUI();
+        }
+
+        function updateCommitteeStatusUI() {
+            const statusText = document.getElementById('current-status-text');
+            const toggleBtn = document.getElementById('status-toggle-button');
+            const boxBg = document.getElementById('status-box-bg');
+
+            if (isRegistrationOpen) {
+                statusText.innerText = "OPEN";
+                toggleBtn.innerText = "CLOSE REGISTRATION";
+                toggleBtn.className = "status-toggle-btn closed-status";
+                boxBg.style.backgroundColor = "#e2f0d9";
+                boxBg.style.borderColor = "#a9d08e";
+            } else {
+                statusText.innerText = "CLOSED";
+                toggleBtn.innerText = "OPEN REGISTRATION";
+                toggleBtn.className = "status-toggle-btn open-status";
+                boxBg.style.backgroundColor = "#fce4d6";
+                boxBg.style.borderColor = "#f4b084";
+            }
+        }
+
+        function checkRegistrationStatusForTeams() {
+            const alertBox = document.getElementById('registration-closed-alert');
+            const formElement = document.getElementById('reg-form-element');
+            
+            if (isRegistrationOpen) {
+                alertBox.classList.remove('show-alert');
+                formElement.style.pointerEvents = "auto";
+                formElement.style.opacity = "1";
+            } else {
+                alertBox.classList.add('show-alert');
+                formElement.style.pointerEvents = "none";
+                formElement.style.opacity = "0.5";
+            }
         }
 
         function handleCategoryChange() {
@@ -636,6 +737,10 @@
 
         function handleRegistration(e) {
             e.preventDefault();
+            if (!isRegistrationOpen) {
+                alert("Registration is currently closed by the Committee!");
+                return;
+            }
             
             const name = document.getElementById('participant-name').value.trim();
             const categorySelect = document.getElementById('category-select');
@@ -691,14 +796,15 @@
 
             teamData.forEach(reg => {
                 const row = document.createElement('tr');
+                const disabledAttr = !isRegistrationOpen ? "disabled" : "";
                 row.innerHTML = `
                     <td>${reg.name}</td>
                     <td>${reg.category}</td>
                     <td>${reg.events}</td>
                     <td class="action-column">
                         <div class="action-btn-group">
-                            <button class="edit-action-btn" onclick="editRegistration(${reg.originalIndex})">Edit</button>
-                            <button class="delete-action-btn" onclick="deleteRegistration(${reg.originalIndex})">Delete</button>
+                            <button class="edit-action-btn" ${disabledAttr} onclick="editRegistration(${reg.originalIndex})">Edit</button>
+                            <button class="delete-action-btn" ${disabledAttr} onclick="deleteRegistration(${reg.originalIndex})">Delete</button>
                         </div>
                     </td>
                 `;
@@ -707,6 +813,7 @@
         }
 
         function editRegistration(index) {
+            if (!isRegistrationOpen) return;
             const reg = allRegistrations[index];
             document.getElementById('participant-name').value = reg.name;
             document.getElementById('edit-index').value = index;
@@ -740,6 +847,7 @@
         }
 
         function deleteRegistration(index) {
+            if (!isRegistrationOpen) return;
             if (confirm("Are you sure you want to delete this registration?")) {
                 allRegistrations.splice(index, 1);
                 localStorage.setItem('bahja_registrations', JSON.stringify(allRegistrations));
