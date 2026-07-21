@@ -363,6 +363,16 @@
             </div>
 
             <div class="form-group">
+                <label for="team-select">Select Team</label>
+                <select id="team-select" class="form-control form-select" required>
+                    <option value="" disabled selected>Choose your Team</option>
+                    <option value="Jabaliyya">Jabaliyya</option>
+                    <option value="Hanoon">Hanoon</option>
+                    <option value="Swafafa">Swafafa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="category-select">Select Category</label>
                 <select id="category-select" class="form-control form-select" onchange="handleCategoryChange()" required>
                     <option value="" disabled selected>Choose a Zone</option>
@@ -472,6 +482,7 @@
         function handleSubmit(e) {
             e.preventDefault();
             const name = document.getElementById('participant-name').value;
+            const team = document.getElementById('team-select').value;
             const categorySelect = document.getElementById('category-select');
             const selectedZoneText = categorySelect.options[categorySelect.selectedIndex].text;
             const checkboxes = document.querySelectorAll('input[name="events"]:checked');
@@ -486,7 +497,511 @@
                 return;
             }
 
-            alert("Registration Successful!\nName: " + name + "\nZone: " + selectedZoneText + "\nSelected Events: " + selectedEvents.join(", "));
+            alert("Registration Successful!\nName: " + name + "\nTeam: " + team + "\nZone: " + selectedZoneText + "\nSelected Events: " + selectedEvents.join(", "));
+        }
+    </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAHJA 2026</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #1a1a1a;
+            scroll-behavior: smooth;
+        }
+
+        h1 {
+            color: #0056b3;
+            font-size: 3rem;
+            margin-top: 50px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #333333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .event-container {
+            margin-top: 60px;
+            padding: 20px;
+        }
+
+        .event-container h2 {
+            color: #1a1a1a;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+        }
+
+        .tab-btn {
+            background-color: white;
+            color: #007bff;
+            border: 1px solid #dee2e6;
+            padding: 25px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 160px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,86,179,0.1);
+            border-color: #007bff;
+        }
+
+        .tab-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+            box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .zone-content {
+            display: none;
+        }
+
+        .zone-content.active-zone {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .event-grid {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid #dee2e6;
+            transition: 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,86,179,0.15);
+            border-color: #007bff;
+        }
+
+        .event-card h3 {
+            margin: 0 0 12px 0;
+            color: #007bff;
+            font-size: 1.2rem;
+        }
+
+        .event-card p {
+            margin: 0;
+            color: #666666;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        .registration-section {
+            background: white;
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .registration-section h2 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+            cursor: pointer;
+        }
+
+        .form-zone-events {
+            display: none;
+            margin-top: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fdfdfd;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-zone-events.show-events {
+            display: block;
+        }
+
+        .zone-group-title {
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #dee2e6;
+            padding-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #444;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,123,255,0.2);
+            transition: 0.3s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BAHJA 2026 - DAWA FEST</h1>
+    <p class="subtitle">WELCOME TO BAHJA 2K26</p>
+    
+    <a href="#register-form" class="btn">Register Now</a>
+
+    <div class="event-container">
+        <h2>CATEGORIES</h2>
+        
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="filterZone(event, 'lower')">LOWER ZONE</button>
+            <button class="tab-btn" onclick="filterZone(event, 'middle')">MIDDLE ZONE</button>
+            <button class="tab-btn" onclick="filterZone(event, 'higher')">HIGHER ZONE</button>
+            <button class="tab-btn" onclick="filterZone(event, 'super')">SUPER ZONE</button>
+            <button class="tab-btn" onclick="filterZone(event, 'general')">GENERAL</button>
+        </div>
+
+        <!-- LOWER ZONE -->
+        <div id="lower" class="zone-content active-zone">
+            <div class="event-grid">
+                <div class="event-card">
+                    <h3>Speech</h3>
+                    <p>Elocution</p>
+                </div>
+                <div class="event-card">
+                    <h3>Quiz</h3>
+                    <p>Islamic Quiz</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIDDLE ZONE -->
+        <div id="middle" class="zone-content">
+            <div class="event-grid">
+                <div class="event-card">
+                    <h3>Mappila Pattu</h3>
+                    <p>Cultural Event</p>
+                </div>
+                <div class="event-card">
+                    <h3>Nasheeda</h3>
+                    <p>Islamic Song</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIGHER ZONE -->
+        <div id="higher" class="zone-content">
+            <div class="event-grid">
+                <div class="event-card">
+                    <h3>Poster Designing</h3>
+                    <p>Digital Art</p>
+                </div>
+                <div class="event-card">
+                    <h3>Debate</h3>
+                    <p>Discussion</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUPER ZONE -->
+        <div id="super" class="zone-content">
+            <div class="event-grid">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Coding</h3>
+                        <p>Tech Contest</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Web Design</h3>
+                        <p>Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GENERAL -->
+        <div id="general" class="zone-content">
+            <div class="event-grid">
+                <div class="event-card">
+                    <h3>Qawwali</h3>
+                    <p>Group Song</p>
+                </div>
+                <div class="event-card">
+                    <h3>Duff Mutt</h3>
+                    <p>Traditional Art</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- REGISTRATION FORM -->
+    <div id="register-form" class="registration-section">
+        <h2>Event Registration</h2>
+        <form onsubmit="handleSubmit(event)">
+            
+            <div class="form-group">
+                <label for="participant-name">Participant Name</label>
+                <input type="text" id="participant-name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="team-select">Select Team</label>
+                <select id="team-select" class="form-control form-select" required>
+                    <option value="" disabled selected>Choose your Team</option>
+                    <option value="Jabaliyya">Jabaliyya</option>
+                    <option value="Hanoon">Hanoon</option>
+                    <option value="Swafafa">Swafafa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category-select">Select Category</label>
+                <select id="category-select" class="form-control form-select" onchange="handleCategoryChange()" required>
+                    <option value="" disabled selected>Choose a Zone</option>
+                    <option value="form-lower">LOWER ZONE</option>
+                    <option value="form-middle">MIDDLE ZONE</option>
+                    <option value="form-higher">HIGHER ZONE</option>
+                    <option value="form-super">SUPER ZONE</option>
+                    <option value="form-general">GENERAL</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                
+                <!-- LOWER ZONE EVENTS -->
+                <div id="form-lower" class="form-zone-events">
+                    <div class="zone-group-title">LOWER ZONE EVENTS</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Lower - Speech"> Speech (Elocution)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Lower - Quiz"> Quiz (Islamic Quiz)
+                    </label>
+                </div>
+
+                <!-- MIDDLE ZONE EVENTS -->
+                <div id="form-middle" class="form-zone-events">
+                    <div class="zone-group-title">MIDDLE ZONE EVENTS</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Middle - Mappila Pattu"> Mappila Pattu
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Middle - Nasheeda"> Nasheeda
+                    </label>
+                </div>
+
+                <!-- HIGHER ZONE EVENTS -->
+                <div id="form-higher" class="form-zone-events">
+                    <div class="zone-group-title">HIGHER ZONE EVENTS</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Higher - Poster Designing"> Poster Designing
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Higher - Debate"> Debate
+                    </label>
+                </div>
+
+                <!-- SUPER ZONE EVENTS -->
+                <div id="form-super" class="form-zone-events">
+                    <div class="zone-group-title">SUPER ZONE EVENTS</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Super - Coding"> Coding
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="Super - Web Design"> Web Design
+                    </label>
+                </div>
+
+                <!-- GENERAL EVENTS -->
+                <div id="form-general" class="form-zone-events">
+                    <div class="zone-group-title">GENERAL EVENTS</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="General - Qawwali"> Qawwali
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="events" value="General - Duff Mutt"> Duff Mutt
+                    </label>
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Registration</button>
+        </form>
+    </div>
+
+    <script>
+        function filterZone(e, zoneId) {
+            const contents = document.querySelectorAll('.zone-content');
+            contents.forEach(content => {
+                content.classList.remove('active-zone');
+            });
+
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(zoneId).classList.add('active-zone');
+            e.currentTarget.classList.add('active');
+        }
+
+        function handleCategoryChange() {
+            const selectedZone = document.getElementById('category-select').value;
+            
+            const allZoneEvents = document.querySelectorAll('.form-zone-events');
+            allZoneEvents.forEach(zone => {
+                zone.classList.remove('show-events');
+                
+                const checkboxes = zone.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+            });
+
+            if (selectedZone) {
+                document.getElementById(selectedZone).classList.add('show-events');
+            }
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('participant-name').value;
+            const team = document.getElementById('team-select').value;
+            const categorySelect = document.getElementById('category-select');
+            const selectedZoneText = categorySelect.options[categorySelect.selectedIndex].text;
+            const checkboxes = document.querySelectorAll('input[name="events"]:checked');
+            
+            let selectedEvents = [];
+            checkboxes.forEach(cb => {
+                selectedEvents.push(cb.value);
+            });
+
+            if(selectedEvents.length === 0) {
+                alert("Please select at least one event.");
+                return;
+            }
+
+            alert("Registration Successful!\nName: " + name + "\nTeam: " + team + "\nZone: " + selectedZoneText + "\nSelected Events: " + selectedEvents.join(", "));
         }
     </script>
 
