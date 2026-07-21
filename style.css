@@ -1,86 +1,56 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    color: #1a1a1a;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAHJA 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-h1 {
-    color: #0056b3;
-    font-size: 3rem;
-    margin-top: 50px;
-}
+    <h1>BAHJA 2026 - DAWA FEST</h1>
+    <p class="subtitle">WELCOME TO BAHJA 2K26</p>
+    
+    <a href="#" class="btn">Register Now</a>
 
-.subtitle {
-    font-size: 1.2rem;
-    color: #333333;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
+    <div class="event-container">
+        <h2>PROGRAMS (Events List)</h2>
+        
+        <div class="event-grid">
+            <div class="event-card">
+                <h3>Speech</h3>
+                <p>Elocution Competition</p>
+            </div>
+            <div class="event-card">
+                <h3>Quiz</h3>
+                <p>Islamic Quiz</p>
+            </div>
+            <div class="event-card">
+                <h3>Mappila Pattu</h3>
+                <p>Cultural Event</p>
+            </div>
+            <div class="event-card">
+                <h3>Nasheeda</h3>
+                <p>Islamic Song</p>
+            </div>
+            <div class="event-card">
+                <h3>Poster Designing</h3>
+                <p>Digital Art</p>
+            </div>
+            <div class="event-card">
+                <h3>Debate</h3>
+                <p>Discussion</p>
+            </div>
+            <div class="event-card">
+                <h3>Coding</h3>
+                <p>Tech Contest</p>
+            </div>
+            <div class="event-card">
+                <h3>Qawwali</h3>
+                <p>Group Song</p>
+            </div>
+        </div>
+    </div>
 
-.btn {
-    display: inline-block;
-    background-color: #007bff;
-    color: white;
-    padding: 12px 30px;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 25px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-    transition: 0.3s;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.event-container {
-    margin-top: 60px;
-    padding: 20px;
-}
-
-.event-container h2 {
-    color: #1a1a1a;
-    font-size: 2rem;
-    margin-bottom: 30px;
-}
-
-.event-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.event-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    width: 200px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    border: 1px solid #dee2e6;
-    transition: 0.3s;
-}
-
-.event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,86,179,0.15);
-    border-color: #007bff;
-}
-
-.event-card h3 {
-    margin: 0 0 10px 0;
-    color: #007bff;
-}
-
-.event-card p {
-    margin: 0;
-    color: #333333;
-    font-size: 0.95rem;
-}
+</body>
+</html>
