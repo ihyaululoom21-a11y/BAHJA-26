@@ -1,136 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAHJA 2026</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #1a1a1a;
+}
 
-    <h1>BAHJA 2026 - DAWA FEST</h1>
-    <p class="subtitle">WELCOME TO BAHJA 2K26</p>
-    
-    <a href="#" class="btn">Register Now</a>
+h1 {
+    color: #0056b3;
+    font-size: 3rem;
+    margin-top: 50px;
+}
 
-    <div class="event-container">
-        
-        <!-- 1. LOWER ZONE -->
-        <div class="zone-section">
-            <button class="zone-toggle">1. LOWER ZONE <span class="arrow">▼</span></button>
-            <div class="zone-content">
-                <div class="event-grid">
-                    <div class="event-card">
-                        <h3>Speech</h3>
-                        <p>Elocution</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>Quiz</h3>
-                        <p>Islamic Quiz</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+.subtitle {
+    font-size: 1.2rem;
+    color: #333333;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
 
-        <!-- 2. MIDDLE ZONE -->
-        <div class="zone-section">
-            <button class="zone-toggle">2. MIDDLE ZONE <span class="arrow">▼</span></button>
-            <div class="zone-content">
-                <div class="event-grid">
-                    <div class="event-card">
-                        <h3>Mappila Pattu</h3>
-                        <p>Cultural Event</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>Nasheeda</h3>
-                        <p>Islamic Song</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+.btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    transition: 0.3s;
+    font-weight: bold;
+}
 
-        <!-- 3. HIGHER ZONE -->
-        <div class="zone-section">
-            <button class="zone-toggle">3. HIGHER ZONE <span class="arrow">▼</span></button>
-            <div class="zone-content">
-                <div class="event-grid">
-                    <div class="event-card">
-                        <h3>Poster Designing</h3>
-                        <p>Digital Art</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>Debate</h3>
-                        <p>Discussion</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
 
-        <!-- 4. SUPER ZONE -->
-        <div class="zone-section">
-            <button class="zone-toggle">4. SUPER ZONE <span class="arrow">▼</span></button>
-            <div class="zone-content">
-                <div class="event-grid">
-                    <div class="event-card">
-                        <h3>Coding</h3>
-                        <p>Tech Contest</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>Web Design</h3>
-                        <p>Development</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+.event-container {
+    margin-top: 50px;
+    padding: 20px;
+}
 
-        <!-- 5. GENERAL -->
-        <div class="zone-section">
-            <button class="zone-toggle">5. GENERAL <span class="arrow">▼</span></button>
-            <div class="zone-content">
-                <div class="event-grid">
-                    <div class="event-card">
-                        <h3>Qawwali</h3>
-                        <p>Group Song</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>Duff Mutt</h3>
-                        <p>Traditional Art</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+.event-container h2 {
+    color: #1a1a1a;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
 
-    </div>
-
-    <script>
-        const toggles = document.querySelectorAll('.zone-toggle');
-        
-        toggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                
-                const content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        });
-    </script>
-
-</body>
-</html>
 .zone-section {
     max-width: 600px;
     margin: 15px auto;
-    text-align: center;
 }
 
 .zone-toggle {
     background-color: #0056b3;
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     width: 100%;
     padding: 15px 20px;
@@ -165,14 +92,40 @@
     border: 1px solid #dee2e6;
     border-top: none;
     border-radius: 0 0 8px 8px;
-    animation: fadeIn 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+.event-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.zone-content .event-grid {
-    gap: 15px;
+.event-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border: 1px solid #dee2e6;
+    transition: 0.3s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,86,179,0.15);
+    border-color: #007bff;
+}
+
+.event-card h3 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+    font-size: 1.1rem;
+}
+
+.event-card p {
+    margin: 0;
+    color: #333333;
+    font-size: 0.95rem;
 }
