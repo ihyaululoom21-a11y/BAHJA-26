@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,27 +14,112 @@
     <a href="#" class="btn">Register Now</a>
 
     <div class="event-container">
-        <h2>PROGRAMS </h2>
+        <h2>PROGRAMS</h2>
         
-        <div class="event-grid">
-            <div class="event-card">
-                <h3>Speech</h3>
-                <p>MAPPILA PPATT</p>
-            </div>
-            <div class="event-card">
-                <h3>Quiz</h3>
-                <p>NASHEEDA</p>
-            </div>
-            <div class="event-card">
-                <h3>POSTER DESIGNING</h3>
-                <p>DEBATE</p>
-            </div>
-            <div class="event-card">
-                <h3>Coding</h3>
-                <p>QAWWALIO</p>
+        <!-- 1. LOWER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">1. LOWER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Speech</h3>
+                        <p>Elocution</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Quiz</h3>
+                        <p>Islamic Quiz</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 2. MIDDLE ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">2. MIDDLE ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Mappila Pattu</h3>
+                        <p>Cultural Event</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Nasheeda</h3>
+                        <p>Islamic Song</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. HIGHER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">3. HIGHER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Poster Designing</h3>
+                        <p>Digital Art</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Debate</h3>
+                        <p>Discussion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SUPER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">4. SUPER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Coding</h3>
+                        <p>Tech Contest</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Web Design</h3>
+                        <p>Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. GENERAL -->
+        <div class="zone-section">
+            <button class="zone-toggle">5. GENERAL <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Qawwali</h3>
+                        <p>Group Song</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Duff Mutt</h3>
+                        <p>Traditional Art</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        const toggles = document.querySelectorAll('.zone-toggle');
+        
+        toggles.defaultActive = false;
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                const content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
