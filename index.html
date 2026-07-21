@@ -48,12 +48,13 @@
             transform: scale(1.05);
         }
 
-        #login-screen, #registration-screen {
+        .screen-view {
+            display: none;
             animation: fadeIn 0.5s ease;
         }
 
-        #registration-screen {
-            display: none;
+        .active-screen {
+            display: block;
         }
 
         .login-section {
@@ -71,6 +72,19 @@
             text-align: center;
             color: #0056b3;
             margin-bottom: 25px;
+        }
+
+        .committee-login-link {
+            margin-top: 20px;
+            display: block;
+            color: #6c757d;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .committee-login-link:hover {
+            color: #0056b3;
         }
 
         .event-container {
@@ -314,6 +328,87 @@
             color: #0056b3;
             font-size: 1.1rem;
         }
+
+        /* COMMITTEE DASHBOARD STYLES */
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .print-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .nav-header, .print-btn, .dashboard-header button {
+                display: none !important;
+            }
+            .dashboard-container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -321,16 +416,16 @@
     <h1>BAHJA 2026 - DAWA FEST</h1>
     <p class="subtitle">WELCOME TO BAHJA 2K26</p>
 
-    <!-- FIRST SCREEN: LOGIN VIEW -->
-    <div id="login-screen">
+    <!-- SCREEN 1: LOGIN SCREEN -->
+    <div id="login-screen" class="screen-view active-screen">
         <a href="#login-box" class="btn">Login Now</a>
 
         <div id="login-box" class="login-section">
-            <h2>Leader Login</h2>
+            <h2 id="login-title">Team Leader Login</h2>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Enter team username" required>
+                    <input type="text" id="username" class="form-control" placeholder="Enter username" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -338,12 +433,12 @@
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
+            <span class="committee-login-link" onclick="toggleLoginMode()" id="toggle-link">Committee Member Login? Click here</span>
         </div>
     </div>
 
-    <!-- SECOND SCREEN: REGISTRATION VIEW -->
-    <div id="registration-screen">
-        
+    <!-- SCREEN 2: TEAM REGISTRATION SCREEN -->
+    <div id="registration-screen" class="screen-view">
         <div class="nav-header">
             <span class="welcome-team" id="logged-in-team-text">Logged in Team: </span>
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
@@ -432,14 +527,13 @@
 
         </div>
 
-        <!-- REGISTRATION FORM -->
         <div id="register-form" class="registration-section">
             <h2>Event Registration</h2>
-            <form onsubmit="handleSubmit(event)">
+            <form onsubmit="handleRegistration(event)">
                 
                 <div class="form-group">
                     <label for="participant-name">Participant Name</label>
-                    <input type="text" id="participant-name" class="form-control" placeholder="Enter your full name" required>
+                    <input type="text" id="participant-name" class="form-control" placeholder="Enter participant full name" required>
                 </div>
 
                 <div class="form-group">
@@ -455,7 +549,6 @@
                 </div>
 
                 <div class="form-group">
-                    
                     <!-- LOWER ZONE EVENTS -->
                     <div id="form-lower" class="form-zone-events">
                         <div class="zone-group-title">LOWER ZONE EVENTS</div>
@@ -510,17 +603,46 @@
                             <input type="checkbox" name="events" value="Duff Mutt"> Duff Mutt
                         </label>
                     </div>
-
                 </div>
 
                 <button type="submit" class="submit-btn">Submit Registration</button>
             </form>
         </div>
+    </div>
 
+    <!-- SCREEN 3: COMMITTEE DASHBOARD SCREEN -->
+    <div id="committee-screen" class="screen-view">
+        <div class="nav-header">
+            <span class="welcome-team">Committee Control Panel</span>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>All Registrations Report</h2>
+                <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Participant Name</th>
+                        <th>Team</th>
+                        <th>Category</th>
+                        <th>Events</th>
+                    </tr>
+                </thead>
+                <tbody id="registration-table-body">
+                    <!-- Dynamic Data Goes Here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         let currentActiveTeam = "";
+        let isCommitteeMode = false;
+        
+        let allRegistrations = JSON.parse(localStorage.getItem('bahja_registrations')) || [];
 
         const authorizedTeams = {
             "jabaliyya": "jabaliyya",
@@ -528,41 +650,66 @@
             "swafafa": "swafafa"
         };
 
+        const committeeCredentials = {
+            "username": "committee",
+            "password": "committee2026"
+        };
+
+        function toggleLoginMode() {
+            isCommitteeMode = !isCommitteeMode;
+            const title = document.getElementById('login-title');
+            const link = document.getElementById('toggle-link');
+            
+            if (isCommitteeMode) {
+                title.innerText = "Committee Login";
+                link.innerText = "Team Leader Login? Click here";
+            } else {
+                title.innerText = "Team Leader Login";
+                link.innerText = "Committee Member Login? Click here";
+            }
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             const userInp = document.getElementById('username').value.trim().toLowerCase();
             const passInp = document.getElementById('password').value.trim();
 
-            if (authorizedTeams[userInp] && authorizedTeams[userInp] === passInp) {
-                currentActiveTeam = userInp.charAt(0).toUpperCase() + userInp.slice(1);
-                
-                document.getElementById('logged-in-team-text').innerText = "Logged in Team: " + currentActiveTeam;
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('registration-screen').style.display = 'block';
-                
-                document.getElementById('username').value = "";
-                document.getElementById('password').value = "";
+            if (isCommitteeMode) {
+                if (userInp === committeeCredentials.username && passInp === committeeCredentials.password) {
+                    document.getElementById('login-screen').classList.remove('active-screen');
+                    document.getElementById('committee-screen').classList.add('active-screen');
+                    loadCommitteeTable();
+                } else {
+                    alert("Invalid Committee Credentials!");
+                }
             } else {
-                alert("Invalid Username or Password! Please try again.");
+                if (authorizedTeams[userInp] && authorizedTeams[userInp] === passInp) {
+                    currentActiveTeam = userInp.charAt(0).toUpperCase() + userInp.slice(1);
+                    document.getElementById('logged-in-team-text').innerText = "Logged in Team: " + currentActiveTeam;
+                    
+                    document.getElementById('login-screen').classList.remove('active-screen');
+                    document.getElementById('registration-screen').classList.add('active-screen');
+                } else {
+                    alert("Invalid Team Username or Password!");
+                }
             }
+
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
         }
 
         function handleLogout() {
             currentActiveTeam = "";
-            document.getElementById('registration-screen').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'block';
+            document.querySelectorAll('.screen-view').forEach(screen => screen.classList.remove('active-screen'));
+            document.getElementById('login-screen').classList.add('active-screen');
         }
 
         function filterZone(e, zoneId) {
             const contents = document.querySelectorAll('.zone-content');
-            contents.forEach(content => {
-                content.classList.remove('active-zone');
-            });
+            contents.forEach(content => content.classList.remove('active-zone'));
 
             const tabs = document.querySelectorAll('.tab-btn');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
+            tabs.forEach(tab => tab.classList.remove('active'));
 
             document.getElementById(zoneId).classList.add('active-zone');
             e.currentTarget.classList.add('active');
@@ -574,9 +721,7 @@
             const allZoneEvents = document.querySelectorAll('.form-zone-events');
             allZoneEvents.forEach(zone => {
                 zone.classList.remove('show-events');
-                
-                const checkboxes = zone.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(cb => cb.checked = false);
+                zone.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             });
 
             if (selectedZone) {
@@ -584,37 +729,58 @@
             }
         }
 
-        function handleSubmit(e) {
+        function handleRegistration(e) {
             e.preventDefault();
             
-            const committeeNumber = "919876543210"; 
-            
-            const name = document.getElementById('participant-name').value;
+            const name = document.getElementById('participant-name').value.trim();
             const categorySelect = document.getElementById('category-select');
             const selectedZoneText = categorySelect.options[categorySelect.selectedIndex].text;
             const checkboxes = document.querySelectorAll('input[name="events"]:checked');
             
             let selectedEvents = [];
-            checkboxes.forEach(cb => {
-                selectedEvents.push(cb.value);
-            });
+            checkboxes.forEach(cb => selectedEvents.push(cb.value));
 
             if(selectedEvents.length === 0) {
                 alert("Please select at least one event.");
                 return;
             }
 
-            const message = `*BAHJA 2026 - REGISTRATION*%0A` +
-                            `-------------------------%0A` +
-                            `*Name:* ${name}%0A` +
-                            `*Team:* ${currentActiveTeam}%0A` +
-                            `*Category:* ${selectedZoneText}%0A` +
-                            `*Events:* ${selectedEvents.join(", ")}%0A` +
-                            `-------------------------`;
+            const newEntry = {
+                name: name,
+                team: currentActiveTeam,
+                category: selectedZoneText,
+                events: selectedEvents.join(", ")
+            };
 
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${committeeNumber}&text=${message}`;
+            allRegistrations.push(newEntry);
+            localStorage.setItem('bahja_registrations', JSON.stringify(allRegistrations));
+
+            alert("Registration Submitted Successfully!");
             
-            window.open(whatsappUrl, '_blank');
+            document.getElementById('participant-name').value = "";
+            categorySelect.selectedIndex = 0;
+            handleCategoryChange();
+        }
+
+        function loadCommitteeTable() {
+            const tbody = document.getElementById('registration-table-body');
+            tbody.innerHTML = "";
+
+            if (allRegistrations.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="no-data">No registrations found yet.</td></tr>`;
+                return;
+            }
+
+            allRegistrations.forEach(reg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reg.name}</td>
+                    <td><strong>${reg.team}</strong></td>
+                    <td>${reg.category}</td>
+                    <td>${reg.events}</td>
+                `;
+                tbody.appendChild(row);
+            });
         }
     </script>
 
