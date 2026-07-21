@@ -322,15 +322,13 @@
 
         <!-- SUPER ZONE -->
         <div id="super" class="zone-content">
-            <div class="event-grid">
-                <div class="event-card">
-                    <h3>Coding</h3>
-                    <p>Tech Contest</p>
-                </div>
-                <div class="event-card">
-                    <h3>Web Design</h3>
-                    <p>Development</p>
-                </div>
+            <div class="event-card">
+                <h3>Coding</h3>
+                <p>Tech Contest</p>
+            </div>
+            <div class="event-card">
+                <h3>Web Design</h3>
+                <p>Development</p>
             </div>
         </div>
 
@@ -388,10 +386,10 @@
                 <div id="form-lower" class="form-zone-events">
                     <div class="zone-group-title">LOWER ZONE EVENTS</div>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Lower - Speech"> Speech (Elocution)
+                        <input type="checkbox" name="events" value="Speech"> Speech (Elocution)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Lower - Quiz"> Quiz (Islamic Quiz)
+                        <input type="checkbox" name="events" value="Quiz"> Quiz (Islamic Quiz)
                     </label>
                 </div>
 
@@ -399,10 +397,10 @@
                 <div id="form-middle" class="form-zone-events">
                     <div class="zone-group-title">MIDDLE ZONE EVENTS</div>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Middle - Mappila Pattu"> Mappila Pattu
+                        <input type="checkbox" name="events" value="Mappila Pattu"> Mappila Pattu
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Middle - Nasheeda"> Nasheeda
+                        <input type="checkbox" name="events" value="Nasheeda"> Nasheeda
                     </label>
                 </div>
 
@@ -410,10 +408,10 @@
                 <div id="form-higher" class="form-zone-events">
                     <div class="zone-group-title">HIGHER ZONE EVENTS</div>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Higher - Poster Designing"> Poster Designing
+                        <input type="checkbox" name="events" value="Poster Designing"> Poster Designing
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Higher - Debate"> Debate
+                        <input type="checkbox" name="events" value="Debate"> Debate
                     </label>
                 </div>
 
@@ -421,10 +419,10 @@
                 <div id="form-super" class="form-zone-events">
                     <div class="zone-group-title">SUPER ZONE EVENTS</div>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Super - Coding"> Coding
+                        <input type="checkbox" name="events" value="Coding"> Coding
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="Super - Web Design"> Web Design
+                        <input type="checkbox" name="events" value="Web Design"> Web Design
                     </label>
                 </div>
 
@@ -432,10 +430,10 @@
                 <div id="form-general" class="form-zone-events">
                     <div class="zone-group-title">GENERAL EVENTS</div>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="General - Qawwali"> Qawwali
+                        <input type="checkbox" name="events" value="Qawwali"> Qawwali
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="events" value="General - Duff Mutt"> Duff Mutt
+                        <input type="checkbox" name="events" value="Duff Mutt"> Duff Mutt
                     </label>
                 </div>
 
@@ -479,6 +477,9 @@
 
         function handleSubmit(e) {
             e.preventDefault();
+            
+            const committeeNumber = "917012400717"; 
+            
             const name = document.getElementById('participant-name').value;
             const team = document.getElementById('team-select').value;
             const categorySelect = document.getElementById('category-select');
@@ -495,7 +496,17 @@
                 return;
             }
 
-            alert("Registration Successful!\nName: " + name + "\nTeam: " + team + "\nZone: " + selectedZoneText + "\nSelected Events: " + selectedEvents.join(", "));
+            const message = `*BAHJA 2026 - REGISTRATION*%0A` +
+                            `-------------------------%0A` +
+                            `*Name:* ${name}%0A` +
+                            `*Team:* ${team}%0A` +
+                            `*Category:* ${selectedZoneText}%0A` +
+                            `*Events:* ${selectedEvents.join(", ")}%0A` +
+                            `-------------------------`;
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${committeeNumber}&text=${message}`;
+            
+            window.open(whatsappUrl, '_blank');
         }
     </script>
 
