@@ -1,0 +1,33 @@
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    color: #ff4757;
+    font-size: 3rem;
+    margin-top: 50px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #2ed573;
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+ (Hover) */
+.btn:hover {
+    background-color: #26af5f;
+    transform: scale(1.05);
+}
