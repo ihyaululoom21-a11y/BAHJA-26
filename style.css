@@ -1,4 +1,4 @@
-
+/* വെബ്‌സൈറ്റിന്റെ പൊതുവായ സ്റ്റൈൽ */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
@@ -8,12 +8,14 @@ body {
     color: #333;
 }
 
+/* ഹെഡിങ് സ്റ്റൈൽ */
 h1 {
     color: #ff4757;
     font-size: 3rem;
     margin-top: 50px;
 }
 
+/* രജിസ്ട്രേഷൻ ബട്ടൺ സ്റ്റൈൽ */
 .btn {
     display: inline-block;
     background-color: #2ed573;
@@ -26,7 +28,7 @@ h1 {
     transition: 0.3s;
 }
 
- (Hover) */
+/* ബട്ടണിൽ മൗസ് വെക്കുമ്പോൾ മാറാൻ (Hover) */
 .btn:hover {
     background-color: #26af5f;
     transform: scale(1.05);
