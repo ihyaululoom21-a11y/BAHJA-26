@@ -92,9 +92,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .registration-section {
+        .container-box {
             background: white;
-            max-width: 600px;
+            max-width: 800px;
             margin: 30px auto 80px auto;
             padding: 40px 30px;
             border-radius: 16px;
@@ -103,7 +103,7 @@
             text-align: left;
         }
 
-        .registration-section h2 {
+        .container-box h2 {
             text-align: center;
             color: #0056b3;
             margin-bottom: 30px;
@@ -235,17 +235,6 @@
             font-size: 1.1rem;
         }
 
-        .dashboard-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border: 1px solid #dee2e6;
-            text-align: left;
-        }
-
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -299,7 +288,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         th, td {
@@ -318,6 +307,41 @@
             background-color: #f8f9fa;
         }
 
+        .action-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-action-btn {
+            background-color: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .edit-action-btn:hover {
+            background-color: #e0a800;
+        }
+
+        .delete-action-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .delete-action-btn:hover {
+            background-color: #c82333;
+        }
+
         .no-data {
             text-align: center;
             padding: 30px;
@@ -329,14 +353,15 @@
             body {
                 background: white;
             }
-            .nav-header, .print-btn, .filter-section, .dashboard-header h2 {
+            .nav-header, .print-btn, .filter-section, .dashboard-header h2, .action-column, .action-btn-group {
                 display: none !important;
             }
-            .dashboard-container {
+            .container-box {
                 box-shadow: none;
                 border: none;
                 margin: 0;
                 padding: 0;
+                max-width: 100%;
             }
             th {
                 background-color: #000 !important;
@@ -371,16 +396,17 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: TEAM REGISTRATION SCREEN -->
+    <!-- SCREEN 2: TEAM REGISTRATION & MANAGEMENT SCREEN -->
     <div id="registration-screen" class="screen-view">
         <div class="nav-header">
             <span class="welcome-team" id="logged-in-team-text">Logged in Team: </span>
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
 
-        <div id="register-form" class="registration-section">
-            <h2>Event Registration</h2>
+        <div class="container-box">
+            <h2 id="form-heading">Event Registration</h2>
             <form onsubmit="handleRegistration(event)">
+                <input type="hidden" id="edit-index" value="-1">
                 
                 <div class="form-group">
                     <label for="participant-name">Participant Name</label>
@@ -403,61 +429,59 @@
                     <!-- LOWER ZONE EVENTS -->
                     <div id="form-lower" class="form-zone-events">
                         <div class="zone-group-title">LOWER ZONE EVENTS</div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Speech"> Speech (Elocution)
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Quiz"> Quiz (Islamic Quiz)
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Speech"> Speech (Elocution)</label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Quiz"> Quiz (Islamic Quiz)</label>
                     </div>
 
                     <!-- MIDDLE ZONE EVENTS -->
                     <div id="form-middle" class="form-zone-events">
                         <div class="zone-group-title">MIDDLE ZONE EVENTS</div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Mappila Pattu"> Mappila Pattu
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Nasheeda"> Nasheeda
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Mappila Pattu"> Mappila Pattu</label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Nasheeda"> Nasheeda</label>
                     </div>
 
                     <!-- HIGHER ZONE EVENTS -->
                     <div id="form-higher" class="form-zone-events">
                         <div class="zone-group-title">HIGHER ZONE EVENTS</div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Poster Designing"> Poster Designing
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Debate"> Debate
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Poster Designing"> Poster Designing</label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Debate"> Debate</label>
                     </div>
 
                     <!-- SUPER ZONE EVENTS -->
                     <div id="form-super" class="form-zone-events">
                         <div class="zone-group-title">SUPER ZONE EVENTS</div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Coding"> Coding
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Web Design"> Web Design
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Coding"> Coding</label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Web Design"> Web Design</label>
                     </div>
 
                     <!-- GENERAL EVENTS -->
                     <div id="form-general" class="form-zone-events">
                         <div class="zone-group-title">GENERAL EVENTS</div>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Qawwali"> Qawwali
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="events" value="Duff Mutt"> Duff Mutt
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Qawwali"> Qawwali</label>
+                        <label class="checkbox-label"><input type="checkbox" name="events" value="Duff Mutt"> Duff Mutt</label>
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Submit Registration</button>
+                <button type="submit" id="submit-btn-text" class="submit-btn">Submit Registration</button>
             </form>
+        </div>
+
+        <!-- TEAM'S REGISTERED LIST -->
+        <div class="container-box">
+            <h2>Your Team Registrations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Participant Name</th>
+                        <th>Category</th>
+                        <th>Events</th>
+                        <th class="action-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="team-registration-table-body">
+                    <!-- Dynamic Team Data -->
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -468,13 +492,12 @@
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
 
-        <div class="dashboard-container">
+        <div class="container-box" style="max-width: 1000px;">
             <div class="dashboard-header">
                 <h2>All Registrations Report</h2>
                 <button class="print-btn" onclick="window.print()">Print Report</button>
             </div>
 
-            <!-- FILTERS DISPLAYED CLEARLY HERE -->
             <div class="filter-section">
                 <div class="filter-group">
                     <label for="filter-team">Filter by Team</label>
@@ -523,8 +546,8 @@
                         <th>Events</th>
                     </tr>
                 </thead>
-                <tbody id="registration-table-body">
-                    <!-- Dynamic Data -->
+                <tbody id="committee-table-body">
+                    <!-- Dynamic Committee Data -->
                 </tbody>
             </table>
         </div>
@@ -581,6 +604,7 @@
                     
                     document.getElementById('login-screen').classList.remove('active-screen');
                     document.getElementById('registration-screen').classList.add('active-screen');
+                    loadTeamTable();
                 } else {
                     alert("Invalid Team Username or Password!");
                 }
@@ -617,6 +641,7 @@
             const categorySelect = document.getElementById('category-select');
             const selectedZoneText = categorySelect.options[categorySelect.selectedIndex].text;
             const checkboxes = document.querySelectorAll('input[name="events"]:checked');
+            const editIndex = document.getElementById('edit-index').value;
             
             let selectedEvents = [];
             checkboxes.forEach(cb => selectedEvents.push(cb.value));
@@ -633,18 +658,97 @@
                 events: selectedEvents.join(", ")
             };
 
-            allRegistrations.push(newEntry);
-            localStorage.setItem('bahja_registrations', JSON.stringify(allRegistrations));
+            if (editIndex === "-1") {
+                allRegistrations.push(newEntry);
+                alert("Registration Submitted Successfully!");
+            } else {
+                allRegistrations[editIndex] = newEntry;
+                alert("Registration Updated Successfully!");
+                document.getElementById('edit-index').value = "-1";
+                document.getElementById('form-heading').innerText = "Event Registration";
+                document.getElementById('submit-btn-text').innerText = "Submit Registration";
+            }
 
-            alert("Registration Submitted Successfully!");
+            localStorage.setItem('bahja_registrations', JSON.stringify(allRegistrations));
             
             document.getElementById('participant-name').value = "";
             categorySelect.selectedIndex = 0;
             handleCategoryChange();
+            loadTeamTable();
+        }
+
+        function loadTeamTable() {
+            const tbody = document.getElementById('team-registration-table-body');
+            tbody.innerHTML = "";
+
+            let teamData = allRegistrations.map((reg, index) => ({ ...reg, originalIndex: index }))
+                                           .filter(reg => reg.team === currentActiveTeam);
+
+            if (teamData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="no-data">No registrations found for your team.</td></tr>`;
+                return;
+            }
+
+            teamData.forEach(reg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reg.name}</td>
+                    <td>${reg.category}</td>
+                    <td>${reg.events}</td>
+                    <td class="action-column">
+                        <div class="action-btn-group">
+                            <button class="edit-action-btn" onclick="editRegistration(${reg.originalIndex})">Edit</button>
+                            <button class="delete-action-btn" onclick="deleteRegistration(${reg.originalIndex})">Delete</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function editRegistration(index) {
+            const reg = allRegistrations[index];
+            document.getElementById('participant-name').value = reg.name;
+            document.getElementById('edit-index').value = index;
+
+            const categorySelect = document.getElementById('category-select');
+            for (let i = 0; i < categorySelect.options.length; i++) {
+                if (categorySelect.options[i].text === reg.category) {
+                    categorySelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            handleCategoryChange();
+
+            setTimeout(() => {
+                const activeZoneId = categorySelect.value;
+                const activeZoneDiv = document.getElementById(activeZoneId);
+                if (activeZoneDiv) {
+                    const checkboxes = activeZoneDiv.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(cb => {
+                        if (reg.events.includes(cb.value)) {
+                            cb.checked = true;
+                        }
+                    });
+                }
+            }, 50);
+
+            document.getElementById('form-heading').innerText = "Edit Registration";
+            document.getElementById('submit-btn-text').innerText = "Update Registration";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteRegistration(index) {
+            if (confirm("Are you sure you want to delete this registration?")) {
+                allRegistrations.splice(index, 1);
+                localStorage.setItem('bahja_registrations', JSON.stringify(allRegistrations));
+                loadTeamTable();
+            }
         }
 
         function loadCommitteeTable() {
-            const tbody = document.getElementById('registration-table-body');
+            const tbody = document.getElementById('committee-table-body');
             tbody.innerHTML = "";
 
             const targetTeam = document.getElementById('filter-team').value;
