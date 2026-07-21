@@ -29,3 +29,55 @@ h1 {
     background-color: #26af5f;
     transform: scale(1.05);
 }
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.event-container {
+    margin-top: 60px;
+    padding: 20px;
+}
+
+.event-container h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.event-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.event-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 200px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e1e4e8;
+    transition: 0.3s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.event-card h3 {
+    margin: 0 0 10px 0;
+    color: #ff4757;
+}
+
+.event-card p {
+    margin: 0;
+    color: #777;
+    font-size: 0.95rem;
+}
