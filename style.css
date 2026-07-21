@@ -14,43 +14,165 @@
     <a href="#" class="btn">Register Now</a>
 
     <div class="event-container">
-        <h2>PROGRAMS (Events List)</h2>
         
-        <div class="event-grid">
-            <div class="event-card">
-                <h3>Speech</h3>
-                <p>Elocution Competition</p>
-            </div>
-            <div class="event-card">
-                <h3>Quiz</h3>
-                <p>Islamic Quiz</p>
-            </div>
-            <div class="event-card">
-                <h3>Mappila Pattu</h3>
-                <p>Cultural Event</p>
-            </div>
-            <div class="event-card">
-                <h3>Nasheeda</h3>
-                <p>Madh Song</p>
-            </div>
-            <div class="event-card">
-                <h3>Poster Designing</h3>
-                <p>Digital Art</p>
-            </div>
-            <div class="event-card">
-                <h3>Debate</h3>
-                <p>Discussion</p>
-            </div>
-            <div class="event-card">
-                <h3>Coding</h3>
-                <p>Tech Contest</p>
-            </div>
-            <div class="event-card">
-                <h3>Qawwali</h3>
-                <p>Group Song</p>
+        <!-- 1. LOWER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">1. LOWER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Speech</h3>
+                        <p>Elocution</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Quiz</h3>
+                        <p>Islamic Quiz</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 2. MIDDLE ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">2. MIDDLE ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Mappila Pattu</h3>
+                        <p>Cultural Event</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Nasheeda</h3>
+                        <p>Islamic Song</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. HIGHER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">3. HIGHER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Poster Designing</h3>
+                        <p>Digital Art</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Debate</h3>
+                        <p>Discussion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SUPER ZONE -->
+        <div class="zone-section">
+            <button class="zone-toggle">4. SUPER ZONE <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Coding</h3>
+                        <p>Tech Contest</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Web Design</h3>
+                        <p>Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. GENERAL -->
+        <div class="zone-section">
+            <button class="zone-toggle">5. GENERAL <span class="arrow">▼</span></button>
+            <div class="zone-content">
+                <div class="event-grid">
+                    <div class="event-card">
+                        <h3>Qawwali</h3>
+                        <p>Group Song</p>
+                    </div>
+                    <div class="event-card">
+                        <h3>Duff Mutt</h3>
+                        <p>Traditional Art</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        const toggles = document.querySelectorAll('.zone-toggle');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                const content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
+.zone-section {
+    max-width: 600px;
+    margin: 15px auto;
+    text-align: center;
+}
+
+.zone-toggle {
+    background-color: #0056b3;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.zone-toggle:hover {
+    background-color: #004085;
+}
+
+.zone-toggle.active .arrow {
+    transform: rotate(180deg);
+}
+
+.arrow {
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.zone-content {
+    display: none;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.zone-content .event-grid {
+    gap: 15px;
+}
