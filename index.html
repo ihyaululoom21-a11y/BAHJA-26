@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAHJA 2026</title>
     
-    <!-- Firebase SDK Modules (Correctly Placed Outside CSS) -->
+    <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Configuration from your screenshot
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDLjwLdAqYArPxPFhWGOdu2BPjoWSg1zWQ",
             authDomain: "bahja-2k26.firebaseapp.com",
@@ -432,14 +432,93 @@
             font-style: italic;
         }
 
+        /* Update & Action Styles for Committee Page */
+        .table-input {
+            width: 80px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .save-row-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .save-row-btn:hover {
+            background-color: #138496;
+        }
+
+        .print-slip-btn {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .print-slip-btn:hover {
+            background-color: #5a32a3;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-success { background-color: #28a745; color: white; }
+        .badge-danger { background-color: #dc3545; color: white; }
+
+        /* Print Container Hidden in UI */
+        #print-receipt-section {
+            display: none;
+        }
+
         @media print {
-            body {
-                background: white;
+            body * {
+                visibility: hidden;
             }
-            .nav-header, .print-btn, .filter-section, .dashboard-header h2, .action-column, .action-btn-group, .status-control-box {
+            /* If printing single slip */
+            body.printing-slip #print-receipt-section, body.printing-slip #print-receipt-section * {
+                visibility: visible;
+            }
+            body.printing-slip #print-receipt-section {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 40px;
+                text-align: left;
+                border: 2px dashed #000;
+                box-sizing: border-box;
+            }
+            
+            /* If printing full table report */
+            body:not(.printing-slip) #committee-screen, body:not(.printing-slip) #committee-screen table, body:not(.printing-slip) #committee-screen table * {
+                visibility: visible;
+            }
+            body:not(.printing-slip) .nav-header, 
+            body:not(.printing-slip) .print-btn, 
+            body:not(.printing-slip) .filter-section, 
+            body:not(.printing-slip) .dashboard-header h2, 
+            body:not(.printing-slip) .status-control-box,
+            body:not(.printing-slip) .hide-print {
                 display: none !important;
             }
-            .container-box {
+            body:not(.printing-slip) .container-box {
                 box-shadow: none;
                 border: none;
                 margin: 0;
@@ -457,6 +536,26 @@
 
     <h1>BAHJA 2026 - DAWA FEST</h1>
     <p class="subtitle">WELCOME TO BAHJA 2K26</p>
+
+    <!-- PRINT SLIP TEMPLATE CONTAINER -->
+    <div id="print-receipt-section">
+        <center>
+            <h2>BAHJA 2026 - DAWA FEST</h2>
+            <h3>COMPETITOR CODE LETTER / REPORTING SLIP</h3>
+            <hr>
+        </center>
+        <p style="font-size: 1.2rem; margin: 15px 0;"><strong>Chest Number / Code:</strong> <span id="p-slip-chest" style="font-size: 1.5rem; border: 1px solid #000; padding: 2px 10px;"></span></p>
+        <p><strong>Participant Name:</strong> <span id="p-slip-name"></span></p>
+        <p><strong>Team:</strong> <span id="p-slip-team"></span></p>
+        <p><strong>Category:</strong> <span id="p-slip-cat"></span></p>
+        <p><strong>Registered Events:</strong> <span id="p-slip-events"></span></p>
+        <p><strong>Status:</strong> <span id="p-slip-status"></span></p>
+        <br><br>
+        <div style="display: flex; justify-content: space-between;">
+            <p>Date: _________________</p>
+            <p>Committee Signature: _________________</p>
+        </div>
+    </div>
 
     <!-- SCREEN 1: LOGIN SCREEN -->
     <div id="login-screen" class="screen-view active-screen">
@@ -560,6 +659,7 @@
                         <th>Participant Name</th>
                         <th>Category</th>
                         <th>Events</th>
+                        <th>Chest No</th>
                         <th class="action-column">Actions</th>
                     </tr>
                 </thead>
@@ -577,7 +677,7 @@
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
 
-        <div class="container-box" style="max-width: 1000px;">
+        <div class="container-box" style="max-width: 1100px;">
             
             <div class="status-control-box" id="status-box-bg">
                 <div>Registration Portal Status: <span id="current-status-text">OPEN</span></div>
@@ -586,7 +686,7 @@
 
             <div class="dashboard-header">
                 <h2>All Registrations Report</h2>
-                <button class="print-btn" onclick="window.print()">Print Report</button>
+                <button class="print-btn" onclick="window.print()">Print Full Report</button>
             </div>
 
             <div class="filter-section">
@@ -635,6 +735,9 @@
                         <th>Team</th>
                         <th>Category</th>
                         <th>Events</th>
+                        <th>Code Letter (Chest No)</th>
+                        <th>Attendance</th>
+                        <th class="hide-print">Action</th>
                     </tr>
                 </thead>
                 <tbody id="committee-table-body">
@@ -819,7 +922,9 @@
                 name: name,
                 team: currentActiveTeam,
                 category: selectedZoneText,
-                events: selectedEvents.join(", ")
+                events: selectedEvents.join(", "),
+                chestNumber: "", 
+                reported: false 
             };
 
             if (editKey === "") {
@@ -828,6 +933,11 @@
                     alert("Registration Submitted Successfully!");
                 });
             } else {
+                // Preserving existing parameters while editing
+                const existing = allRegistrationsObj[editKey] || {};
+                entryData.chestNumber = existing.chestNumber || "";
+                entryData.reported = existing.reported || false;
+
                 window.dbUpdate(window.dbRef(window.dbInstance, 'registrations/' + editKey), entryData).then(() => {
                     alert("Registration Updated Successfully!");
                     document.getElementById('edit-key').value = "";
@@ -852,10 +962,12 @@
                     count++;
                     const row = document.createElement('tr');
                     const disabledAttr = !isRegistrationOpen ? "disabled" : "";
+                    const chestDisplay = reg.chestNumber ? reg.chestNumber : `<span style='color:gray;'>Not Assigned</span>`;
                     row.innerHTML = `
                         <td>${reg.name}</td>
                         <td>${reg.category}</td>
                         <td>${reg.events}</td>
+                        <td><strong>${chestDisplay}</strong></td>
                         <td class="action-column">
                             <div class="action-btn-group">
                                 <button class="edit-action-btn" ${disabledAttr} onclick="editRegistration('${key}')">Edit</button>
@@ -868,7 +980,7 @@
             }
 
             if (count === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="no-data">No registrations found for your team.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="no-data">No registrations found for your team.</td></tr>`;
             }
         }
 
@@ -888,18 +1000,16 @@
 
             handleCategoryChange();
 
-            setTimeout(() => {
-                const activeZoneId = categorySelect.value;
-                const activeZoneDiv = document.getElementById(activeZoneId);
-                if (activeZoneDiv) {
-                    const checkboxes = activeZoneDiv.querySelectorAll('input[type="checkbox"]');
-                    checkboxes.forEach(cb => {
-                        if (reg.events.includes(cb.value)) {
-                            cb.checked = true;
-                        }
-                    });
-                }
-            }, 50);
+            const activeZoneId = categorySelect.value;
+            const activeZoneDiv = document.getElementById(activeZoneId);
+            if (activeZoneDiv) {
+                const checkboxes = activeZoneDiv.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    if (reg.events.includes(cb.value)) {
+                        cb.checked = true;
+                    }
+                });
+            }
 
             document.getElementById('form-heading').innerText = "Edit Registration";
             document.getElementById('submit-btn-text').innerText = "Update Registration";
@@ -932,19 +1042,69 @@
                 if (matchTeam && matchCategory && matchEvent) {
                     count++;
                     const row = document.createElement('tr');
+                    
+                    const chestVal = reg.chestNumber || "";
+                    const reportedChecked = reg.reported ? "checked" : "";
+                    const badgeText = reg.reported ? "<span class='badge badge-success'>Reported</span>" : "<span class='badge badge-danger'>Absent</span>";
+
                     row.innerHTML = `
                         <td>${reg.name}</td>
                         <td><strong>${reg.team}</strong></td>
                         <td>${reg.category}</td>
                         <td>${reg.events}</td>
+                        <td>
+                            <input type="text" class="table-input" id="chest-${key}" value="${chestVal}" placeholder="Code">
+                        </td>
+                        <td>
+                            <label><input type="checkbox" id="rep-${key}" ${reportedChecked}> Checked In</label>
+                            <div style="margin-top:4px;">${badgeText}</div>
+                        </td>
+                        <td class="hide-print">
+                            <div class="action-btn-group">
+                                <button class="save-row-btn" onclick="saveCommitteeUpdates('${key}')">Save</button>
+                                <button class="print-slip-btn" onclick="printSingleSlip('${key}')">Print Slip</button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(row);
                 }
             }
 
             if (count === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="no-data">No matching registrations found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="no-data">No matching registrations found.</td></tr>`;
             }
+        }
+
+        function saveCommitteeUpdates(key) {
+            const chestVal = document.getElementById(`chest-${key}`).value.trim();
+            const reportedVal = document.getElementById(`rep-${key}`).checked;
+
+            window.dbUpdate(window.dbRef(window.dbInstance, 'registrations/' + key), {
+                chestNumber: chestVal,
+                reported: reportedVal
+            }).then(() => {
+                alert("Status Updated Successfully!");
+            });
+        }
+
+        function printSingleSlip(key) {
+            const reg = allRegistrationsObj[key];
+            if(!reg) return;
+
+            // Fill details into hidden template
+            document.getElementById('p-slip-chest').innerText = reg.chestNumber || "N/A";
+            document.getElementById('p-slip-name').innerText = reg.name;
+            document.getElementById('p-slip-team').innerText = reg.team;
+            document.getElementById('p-slip-cat').innerText = reg.category;
+            document.getElementById('p-slip-events').innerText = reg.events;
+            document.getElementById('p-slip-status').innerText = reg.reported ? "REPORTED (PRESENT)" : "NOT REPORTED";
+
+            // Trigger targeted layout printing
+            document.body.classList.add('printing-slip');
+            window.print();
+            
+            // Remove state post print session
+            document.body.classList.remove('printing-slip');
         }
     </script>
 </body>
